@@ -2,13 +2,27 @@ import datetime, sys, traceback
 
 class BaseLogger(object):
 
-    def __init__(self):
-        self.__log_debug = True
-        self.__log_error = True
-        self.__log_info = True
+    def __init__(self, output_stream):
+        self.__output_stream = output_stream
+
+    @property
+    def _log_debug(self):
+        return True
+
+    @property
+    def _log_error(self):
+        return True
+
+    @property
+    def _log_info(self):
+        return True
+
+    @property
+    def _output_stream(self):
+        return self.__output_stream
 
     def debug(self, message, traceback=None):
-        if self.__log_debug:
+        if self._log_debug:
             self.__write(
                 'DEBUG',
                 message,
@@ -16,7 +30,7 @@ class BaseLogger(object):
             )
 
     def error(self, message, traceback=None):
-        if self.__log_error:
+        if self._log_error:
             self.__write(
                 'ERROR',
                 message,
@@ -24,20 +38,16 @@ class BaseLogger(object):
             )
 
     def info(self, message, traceback=None):
-        if self.__log_info:
+        if self._log_info:
             self.__write(
                 'INFO',
                 message,
                 traceback
             )
 
-    def _get_output_stream(self):
-        raise NotImplementedError()
-
     def __write(self, level, message, stack_trace):
         now = datetime.datetime.now()
-        output_stream = self._get_output_stream()
-        output_stream.write(
+        self._output_stream.write(
             '%s %s [%s]: %s\n' % (
                 str(now.date()),
                 now.time().strftime('%H:%M:%S'),
@@ -48,5 +58,5 @@ class BaseLogger(object):
         if stack_trace:
             traceback.print_tb(
                 stack_trace,
-                file=output_stream
+                file=self._output_stream
             )

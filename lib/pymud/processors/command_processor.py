@@ -8,24 +8,28 @@ from os.path import (
 
 from pymud import LOGGER
 
-from .base_command_handler import BaseCommandHandler
+from .base_processor import BaseProcessor
 
-class CommandProcessor():
+class CommandProcessor(BaseProcessor):
 
-    def __init__(self):
+    def __init__(self, client_connection):
+        BaseProcessor.__init__(
+            self,
+            client_connection
+        )
         self.__exit_commands = [
             'exit',
             'quit',
         ]
 
-    def process(self, client_connection, command):
-        command = command or ''
+    def process(self):
+        command = self._client_connection.recv(256) or ''
         if not command:
             return True
         LOGGER.debug(
             '%s:%s - %s [fromclient]' % (
-                client_connection.remote_ip,
-                client_connection.remote_port,
+                self._client_connection.remote_ip,
+                self._client_connection.remote_port,
                 command,
             )
         )
@@ -33,8 +37,8 @@ class CommandProcessor():
             command = 'say ' + command[1:]
         LOGGER.debug(
             '%s:%s - %s [translated]' % (
-                client_connection.remote_ip,
-                client_connection.remote_port,
+                self._client_connection.remote_ip,
+                self._client_connection.remote_port,
                 command,
             )
         )
@@ -44,12 +48,12 @@ class CommandProcessor():
             return False
         command_handler = self.__get_command_handler(args0_lc)
         if not command_handler:
-            client_connection.send(
+            self._client_connection.send(
                 'I could not find what you were referring to'
             )
         else:
             command_handler.handle(
-                client_connection,
+                self._client_connection,
                 args[1:]
             )
         return True
@@ -62,10 +66,7 @@ class CommandProcessor():
 
     def __get_module_name_and_class_name_for_command(self, command):
         return (
-            '%s.%s_command_handler' % (
-                '.'.join(self.__module__.split('.')[:-1]),
-                command.lower(),
-            ),
+            'pymud.commands.%s_command_handler' % command.lower(),
             '%sCommandHandler' % command.capitalize(),
         )
 
