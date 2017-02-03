@@ -6,8 +6,8 @@ from pymud.network import ClientConnectionManager
 
 from .base_processor import BaseProcessor
 
-class LoginProcessor(BaseProcessor):
 
+class LoginProcessor(BaseProcessor):
     def __init__(self, client_connection):
         BaseProcessor.__init__(
             self,

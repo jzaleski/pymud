@@ -1,7 +1,7 @@
 import datetime, sys, traceback
 
-class BaseLogger(object):
 
+class BaseLogger(object):
     def __init__(self, output_stream):
         self.__output_stream = output_stream
 

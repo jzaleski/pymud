@@ -1,10 +1,10 @@
 from pymud.entities import CharacterEntity
 
-class ClientConnection():
 
+class ClientConnection(object):
     def __init__(self, remote_address, socket):
         self.__id = id(self)
-        self.__character_entity = CharacterEntity()
+        self.__character_entity = CharacterEntity(state='standing')
         self.__remote_address = remote_address
         self.__socket = socket
 

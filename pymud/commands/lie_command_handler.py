@@ -1,16 +1,17 @@
 from .base_command_handler import BaseCommandHandler
 
-class StandCommandHandler(BaseCommandHandler):
 
+class LieCommandHandler(BaseCommandHandler):
     def __init__(self):
         BaseCommandHandler.__init__(
             self,
-            'stand',
-            1
+            'lie',
+            1,
+            resulting_state='lying down'
         )
 
     def range_0(self, source, args):
-        return 'You stand up'
+        return 'You lie down'
 
     def range_1(self, source, args):
-        return '%s stands up' % source.character.name
+        return '%s lies down' % source.character.name

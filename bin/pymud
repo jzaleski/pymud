@@ -8,7 +8,7 @@ from os.path import (
     join as join_path,
 )
 
-sys.path.append(abspath(join_path(dirname(__file__), '../lib')))
+sys.path.append(abspath(join_path(dirname(__file__), '..')))
 
 from pymud import (
     CONFIG,

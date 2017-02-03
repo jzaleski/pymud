@@ -9,6 +9,7 @@ from ConfigParser import ConfigParser
 
 from pymud.utilities import ConsoleLogger
 
+
 rel_path = abspath(join_path(dirname(__file__), 'pymud.conf'))
 etc_path = join_path('/etc/pymud', 'pymud.conf')
 

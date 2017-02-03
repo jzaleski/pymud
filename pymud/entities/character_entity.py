@@ -1,14 +1,22 @@
 from .base_entity import BaseEntity
 
-class CharacterEntity(BaseEntity):
 
-    def __init__(self):
+class CharacterEntity(BaseEntity):
+    def __init__(
+        self,
+        name=None,
+        location=None,
+        state=None,
+        on_name_change_callbacks=None,
+        on_location_change_callbacks=None
+    ):
         BaseEntity.__init__(self)
-        self.__location = None
-        self.__name = None
-        self.__on_location_change_callbacks = []
-        self.__on_name_change_callbacks = []
-        self.__waiting_for_name = True
+        self.__name = name
+        self.__location = location
+        self.__state = state
+        self.__on_name_change_callbacks = on_name_change_callbacks or []
+        self.__on_location_change_callbacks = on_location_change_callbacks or []
+        self.__waiting_for_name = name == None
 
     @property
     def location(self):

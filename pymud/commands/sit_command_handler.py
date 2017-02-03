@@ -1,12 +1,13 @@
 from .base_command_handler import BaseCommandHandler
 
-class SitCommandHandler(BaseCommandHandler):
 
+class SitCommandHandler(BaseCommandHandler):
     def __init__(self):
         BaseCommandHandler.__init__(
             self,
             'sit',
-            1
+            1,
+            resulting_state='sitting'
         )
 
     def range_0(self, source, args):

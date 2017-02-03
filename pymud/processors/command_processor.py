@@ -10,8 +10,8 @@ from pymud import LOGGER
 
 from .base_processor import BaseProcessor
 
-class CommandProcessor(BaseProcessor):
 
+class CommandProcessor(BaseProcessor):
     def __init__(self, client_connection):
         BaseProcessor.__init__(
             self,

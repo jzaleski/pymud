@@ -2,8 +2,8 @@ import thread
 
 from pymud.utilities.decorators import class_property
 
-class ClientConnectionManager(object):
 
+class ClientConnectionManager(object):
     __lock = thread.allocate_lock()
     __instance = None
 

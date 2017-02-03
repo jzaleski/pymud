@@ -1,16 +1,17 @@
 from .base_command_handler import BaseCommandHandler
 
-class KneelCommandHandler(BaseCommandHandler):
 
+class StandCommandHandler(BaseCommandHandler):
     def __init__(self):
         BaseCommandHandler.__init__(
             self,
-            'kneel',
-            1
+            'stand',
+            1,
+            resulting_state='standing'
         )
 
     def range_0(self, source, args):
-        return 'You kneel down'
+        return 'You stand up'
 
     def range_1(self, source, args):
-        return '%s kneels down' % source.character.name
+        return '%s stands up' % source.character.name

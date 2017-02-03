@@ -14,8 +14,8 @@ from . import (
     ClientConnectionManager,
 )
 
-class RequestHandler(BaseRequestHandler):
 
+class RequestHandler(BaseRequestHandler):
     def finish(self):
         ClientConnectionManager.instance.remove(self.__client_connection)
         LOGGER.debug(
