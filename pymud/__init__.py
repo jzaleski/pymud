@@ -1,3 +1,5 @@
+import os
+
 from os.path import (
     abspath,
     dirname,
@@ -21,7 +23,15 @@ elif isfile(etc_path):
     CONFIG.read(etc_path)
 else:
     CONFIG.add_section('general')
-    CONFIG.set('general', 'host', '0.0.0.0')
-    CONFIG.set('general', 'port', '7001')
+    CONFIG.set(
+        'general',
+        'host',
+        '0.0.0.0'
+    )
+    CONFIG.set(
+        'general',
+        'port',
+        os.getenv('PORT', '7001')
+    )
 
 LOGGER = ConsoleLogger()
