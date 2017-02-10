@@ -1,1 +1,1 @@
-worker: env bin/pymud
+server: env bin/pymud
