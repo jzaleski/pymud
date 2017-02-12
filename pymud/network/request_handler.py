@@ -32,9 +32,11 @@ class RequestHandler(BaseRequestHandler):
                 continue
             while self.__command_processor.process():
                 continue
-        except NotImplementedError:
-            pass
-        except:
+        except Exception as e:
+            if isinstance(e, NotImplementedError):
+                return
+            if isinstance(e, IOError) and e.errno == 32:
+                return
             LOGGER.error(
                 sys.exc_info()[1],
                 sys.exc_info()[2]
