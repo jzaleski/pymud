@@ -26,7 +26,7 @@ else:
     CONFIG.set(
         'general',
         'host',
-        '0.0.0.0'
+        os.getenv('HOST', '0.0.0.0')
     )
     CONFIG.set(
         'general',
