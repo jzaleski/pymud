@@ -18,13 +18,6 @@ from . import (
 class RequestHandler(BaseRequestHandler):
     def finish(self):
         ClientConnectionManager.instance.remove(self.__client_connection)
-        LOGGER.debug(
-            '%s:%s - %s disconnected' % (
-                self.__client_connection.remote_ip,
-                self.__client_connection.remote_port,
-                self.__client_connection.character.name or 'Unknown',
-            )
-        )
 
     def handle(self):
         try:

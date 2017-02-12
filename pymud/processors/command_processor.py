@@ -45,6 +45,13 @@ class CommandProcessor(BaseProcessor):
         args = command.split(' ')
         args0_lc = args[0].lower()
         if args0_lc in self.__exit_commands:
+            LOGGER.debug(
+                '%s:%s - %s disconnected' % (
+                    self._client_connection.remote_ip,
+                    self._client_connection.remote_port,
+                    self._client_connection.character.name,
+                )
+            )
             return False
         command_handler = self.__get_command_handler(args0_lc)
         if not command_handler:
