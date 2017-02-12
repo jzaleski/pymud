@@ -1,1 +1,1 @@
-server: env bin/pymud
+web: env bin/pymud

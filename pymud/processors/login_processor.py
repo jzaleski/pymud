@@ -18,10 +18,12 @@ class LoginProcessor(BaseProcessor):
         if not self._client_connection.character.waiting_for_name:
             return True
         self._client_connection.send('Please enter your name')
-        name = self._client_connection.recv(64) or ''
-        if not re.match(r'^[a-zA-Z]{3,12}$', name):
+        request = self._client_connection.recv(64) or ''
+        if re.match(r'^GET|HEAD|OPTIONS|POST|PUT', request):
+            raise NotImplementedError()
+        if not re.match(r'^[a-zA-Z]{3,12}$', request):
             return False
-        self._client_connection.character.name = name.capitalize()
+        self._client_connection.character.name = request.capitalize()
         LOGGER.debug(
             '%s:%s - %s connected' % (
                 self._client_connection.remote_ip,

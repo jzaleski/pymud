@@ -22,7 +22,7 @@ class RequestHandler(BaseRequestHandler):
             '%s:%s - %s disconnected' % (
                 self.__client_connection.remote_ip,
                 self.__client_connection.remote_port,
-                self.__client_connection.character.name,
+                self.__client_connection.character.name or 'Unknown',
             )
         )
 
@@ -32,6 +32,8 @@ class RequestHandler(BaseRequestHandler):
                 continue
             while self.__command_processor.process():
                 continue
+        except NotImplementedError:
+            pass
         except:
             LOGGER.error(
                 sys.exc_info()[1],
