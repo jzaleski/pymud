@@ -11,22 +11,22 @@ class CharacterEntity(BaseEntity):
         on_location_change_callbacks=None
     ):
         BaseEntity.__init__(self)
-        self.__name = name
-        self.__location = location
-        self.__state = state
-        self.__on_name_change_callbacks = on_name_change_callbacks or []
-        self.__on_location_change_callbacks = on_location_change_callbacks or []
-        self.__waiting_for_name = name == None
+        self._name = name
+        self._location = location
+        self._state = state
+        self._on_name_change_callbacks = on_name_change_callbacks or []
+        self._on_location_change_callbacks = on_location_change_callbacks or []
+        self._waiting_for_name = name == None
 
     @property
     def location(self):
-        return self.__location
+        return self._location
 
     @location.setter
     def location(self, location):
-        old_location = self.__location
-        self.__location = location
-        for callback in self.__on_location_change_callbacks:
+        old_location = self._location
+        self._location = location
+        for callback in self._on_location_change_callbacks:
             callback(
                 self,
                 old_location,
@@ -35,14 +35,14 @@ class CharacterEntity(BaseEntity):
 
     @property
     def name(self):
-        return self.__name
+        return self._name
 
     @name.setter
     def name(self, name):
-        old_name = self.__name
-        self.__name = name
-        self.__waiting_for_name = False
-        for callback in self.__on_name_change_callbacks:
+        old_name = self._name
+        self._name = name
+        self._waiting_for_name = False
+        for callback in self._on_name_change_callbacks:
             callback(
                 self,
                 old_name,
@@ -51,20 +51,20 @@ class CharacterEntity(BaseEntity):
 
     @property
     def state(self):
-        return self.__state
+        return self._state
 
     @state.setter
     def state(self, state):
-        self.__state = state
+        self._state = state
 
     @property
     def waiting_for_name(self):
-        return self.__waiting_for_name
+        return self._waiting_for_name
 
     def register_on_name_change_callback(self, callback):
         if callback:
-            self.__on_name_change_callbacks.append(callback)
+            self._on_name_change_callbacks.append(callback)
 
     def register_on_location_change_callback(self, callback):
         if callback:
-            self.__on_location_change_callbacks.append(callback)
+            self._on_location_change_callbacks.append(callback)

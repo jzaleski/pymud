@@ -17,13 +17,13 @@ from . import (
 
 class RequestHandler(BaseRequestHandler):
     def finish(self):
-        ClientConnectionManager.instance.remove(self.__client_connection)
+        ClientConnectionManager.instance.remove(self._client_connection)
 
     def handle(self):
         try:
-            while not self.__login_processor.process():
+            while not self._login_processor.process():
                 continue
-            while self.__command_processor.process():
+            while self._command_processor.process():
                 continue
         except Exception as e:
             if isinstance(e, NotImplementedError):
@@ -36,10 +36,8 @@ class RequestHandler(BaseRequestHandler):
             )
 
     def setup(self):
-        self.__client_connection = ClientConnection(
-            self.client_address,
-            self.request
-        )
-        ClientConnectionManager.instance.add(self.__client_connection)
-        self.__command_processor = CommandProcessor(self.__client_connection)
-        self.__login_processor = LoginProcessor(self.__client_connection)
+        client_connection = ClientConnection(self.client_address, self.request)
+        self._command_processor = CommandProcessor(client_connection)
+        self._login_processor = LoginProcessor(client_connection)
+        self._client_connection = client_connection
+        ClientConnectionManager.instance.add(client_connection)

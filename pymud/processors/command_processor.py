@@ -17,7 +17,7 @@ class CommandProcessor(BaseProcessor):
             self,
             client_connection
         )
-        self.__exit_commands = [
+        self._exit_commands = [
             'exit',
             'quit',
         ]
@@ -44,7 +44,7 @@ class CommandProcessor(BaseProcessor):
         )
         args = command.split(' ')
         args0_lc = args[0].lower()
-        if args0_lc in self.__exit_commands:
+        if args0_lc in self._exit_commands:
             LOGGER.debug(
                 '%s:%s - %s disconnected' % (
                     self._client_connection.remote_ip,
@@ -53,7 +53,7 @@ class CommandProcessor(BaseProcessor):
                 )
             )
             return False
-        command_handler = self.__get_command_handler(args0_lc)
+        command_handler = self._get_command_handler(args0_lc)
         if not command_handler:
             self._client_connection.send(
                 'I could not find what you were referring to'
@@ -65,19 +65,19 @@ class CommandProcessor(BaseProcessor):
             )
         return True
 
-    def __get_command_handler(self, command):
+    def _get_command_handler(self, command):
         module_name, class_name = \
-            self.__get_module_name_and_class_name_for_command(command)
-        self.__import_command_handler(module_name)
-        return self.__instantiate_command_handler(module_name, class_name)
+            self._get_module_name_and_class_name_for_command(command)
+        self._import_command_handler(module_name)
+        return self._instantiate_command_handler(module_name, class_name)
 
-    def __get_module_name_and_class_name_for_command(self, command):
+    def _get_module_name_and_class_name_for_command(self, command):
         return (
             'pymud.commands.%s_command_handler' % command.lower(),
             '%sCommandHandler' % command.capitalize(),
         )
 
-    def __has_source_file_changed(self, module_name):
+    def _has_source_file_changed(self, module_name):
         source_file_name, compiled_file_name = [
             join_path(
                 dirname(sys.modules[module_name].__file__),
@@ -86,9 +86,9 @@ class CommandProcessor(BaseProcessor):
         ]
         return getmtime(source_file_name) > getmtime(compiled_file_name)
 
-    def __import_command_handler(self, module_name):
+    def _import_command_handler(self, module_name):
         if module_name in sys.modules:
-            if self.__has_source_file_changed(module_name):
+            if self._has_source_file_changed(module_name):
                 LOGGER.debug('reloading module: "%s"' % module_name)
                 reload(sys.modules[module_name])
                 LOGGER.debug('reloaded module: "%s"' % module_name)
@@ -100,7 +100,7 @@ class CommandProcessor(BaseProcessor):
             except ImportError:
                 LOGGER.error('module: "%s" does not exist' % module_name)
 
-    def __instantiate_command_handler(self, module_name, class_name):
+    def _instantiate_command_handler(self, module_name, class_name):
         return None if module_name not in sys.modules else getattr(
             sys.modules[module_name],
             class_name,

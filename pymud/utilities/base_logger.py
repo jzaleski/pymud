@@ -3,27 +3,14 @@ import datetime, sys, traceback
 
 class BaseLogger(object):
     def __init__(self, output_stream):
-        self.__output_stream = output_stream
-
-    @property
-    def _log_debug(self):
-        return True
-
-    @property
-    def _log_error(self):
-        return True
-
-    @property
-    def _log_info(self):
-        return True
-
-    @property
-    def _output_stream(self):
-        return self.__output_stream
+        self._output_stream = output_stream
+        self._log_debug = True
+        self._log_error = True
+        self._log_info = True
 
     def debug(self, message, traceback=None):
         if self._log_debug:
-            self.__write(
+            self._write(
                 'DEBUG',
                 message,
                 traceback
@@ -31,7 +18,7 @@ class BaseLogger(object):
 
     def error(self, message, traceback=None):
         if self._log_error:
-            self.__write(
+            self._write(
                 'ERROR',
                 message,
                 traceback
@@ -39,13 +26,13 @@ class BaseLogger(object):
 
     def info(self, message, traceback=None):
         if self._log_info:
-            self.__write(
+            self._write(
                 'INFO',
                 message,
                 traceback
             )
 
-    def __write(self, level, message, stack_trace):
+    def _write(self, level, message, stack_trace):
         now = datetime.datetime.now()
         self._output_stream.write(
             '%s %s [%s]: %s\n' % (

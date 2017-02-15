@@ -3,33 +3,33 @@ from pymud.entities import CharacterEntity
 
 class ClientConnection(object):
     def __init__(self, remote_address, socket):
-        self.__id = id(self)
-        self.__character_entity = CharacterEntity(state='standing')
-        self.__remote_address = remote_address
-        self.__socket = socket
+        self._id = id(self)
+        self._character_entity = CharacterEntity(state='standing')
+        self._remote_address = remote_address
+        self._socket = socket
 
     @property
     def id(self):
-        return self.__id
+        return self._id
 
     @property
     def character(self):
-        return self.__character_entity
+        return self._character_entity
 
     @property
     def remote_ip(self):
-        return self.__remote_address[0]
+        return self._remote_address[0]
 
     @property
     def remote_port(self):
-        return self.__remote_address[1]
+        return self._remote_address[1]
 
     def close(self):
-        self.__socket.shutdown(2)
-        self.__socket.close()
+        self._socket.shutdown(2)
+        self._socket.close()
 
     def recv(self, buffer_size):
-        return self.__socket.recv(buffer_size).strip()
+        return self._socket.recv(buffer_size).strip()
 
     def send(
         self,
@@ -37,7 +37,7 @@ class ClientConnection(object):
         num_leading_new_lines=0,
         num_trailing_new_lines=1
     ):
-        self.__socket.send(
+        self._socket.send(
             '%s%s%s' % (
                 '\n' * num_leading_new_lines,
                 message,
