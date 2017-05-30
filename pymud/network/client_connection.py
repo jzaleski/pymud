@@ -1,3 +1,5 @@
+import six
+
 from pymud.entities import CharacterEntity
 
 
@@ -29,18 +31,31 @@ class ClientConnection(object):
         self._socket.close()
 
     def recv(self, buffer_size):
-        return self._socket.recv(buffer_size).strip()
+        return self._decode(self._socket.recv(buffer_size)).strip()
 
     def send(
         self,
         message='',
         num_leading_new_lines=0,
-        num_trailing_new_lines=1
+        num_trailing_new_lines=0
     ):
-        self._socket.send(
-            '%s%s%s' % (
-                '\n' * num_leading_new_lines,
-                message,
-                '\n' * num_trailing_new_lines,
+        if message:
+            self._socket.send(
+                self._encode(
+                    "%s%s%s\n" % (
+                        "\n" * num_leading_new_lines,
+                        message,
+                        "\n" * num_trailing_new_lines,
+                    )
+                )
             )
-        )
+
+    def _decode(self, value):
+        if six.PY3:
+            return value.decode()
+        return value
+
+    def _encode(self, value):
+        if six.PY3:
+            return str.encode(value)
+        return value

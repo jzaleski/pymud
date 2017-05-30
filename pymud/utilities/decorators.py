@@ -1,32 +1,14 @@
-from functools import wraps
-
-
-def class_property(method):
-    class descriptor(object):
+def classproperty(receiver):
+    class WrappedProperty(object):
         def __init__(self):
-            self.attribute_error = \
-                AttributeError('Property "%s" is read-only' % method.__name__)
-        def __get__(self, obj, cls=None):
-            return method(cls or type(obj))
-        def __set__(self, obj, val):
-            raise self.attribute_error
+            self.method_name = receiver.__name__
+
         def __delete__(self, obj):
-            raise self.attribute_error
-    return descriptor()
+            raise AttributeError('Cannot delete "%s"' % self.method_name)
 
-def compose(*decorators):
-    def decorate(method):
-        for decorator in reversed(decorators):
-            method = decorator(method)
-        return method
-    return decorate
+        def __get__(self, obj, cls=None):
+            return receiver(cls or type(obj))
 
-def memoize(receiver):
-    cache = {}
-    @wraps(receiver)
-    def with_memoization(*args, **kwargs):
-        key = str(args) + str(kwargs)
-        if key not in cache:
-            cache[key] = receiver(*args, **kwargs)
-        return cache[key]
-    return with_memoization
+        def __set__(self, obj, val):
+            raise AttributeError('Cannot set "%s"' % self.method_name)
+    return WrappedProperty()

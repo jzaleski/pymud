@@ -3,8 +3,7 @@ from .base_command_handler import BaseCommandHandler
 
 class LieCommandHandler(BaseCommandHandler):
     def __init__(self):
-        BaseCommandHandler.__init__(
-            self,
+        super(LieCommandHandler, self).__init__(
             'lie',
             1,
             resulting_state='lying down'

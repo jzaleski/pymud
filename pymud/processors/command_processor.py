@@ -6,6 +6,8 @@ from os.path import (
     join as join_path,
 )
 
+from six.moves import reload_module as reload
+
 from pymud import LOGGER
 
 from .base_processor import BaseProcessor
@@ -13,14 +15,8 @@ from .base_processor import BaseProcessor
 
 class CommandProcessor(BaseProcessor):
     def __init__(self, client_connection):
-        BaseProcessor.__init__(
-            self,
-            client_connection
-        )
-        self._exit_commands = [
-            'exit',
-            'quit',
-        ]
+        super(CommandProcessor, self).__init__(client_connection)
+        self._exit_commands = {'exit', 'quit'}
 
     def process(self):
         command = self._client_connection.recv(256) or ''
@@ -56,33 +52,30 @@ class CommandProcessor(BaseProcessor):
         command_handler = self._get_command_handler(args0_lc)
         if not command_handler:
             self._client_connection.send(
-                'I could not find what you were referring to'
-            )
+                'I could not find what you were referring to')
         else:
-            command_handler.handle(
-                self._client_connection,
-                args[1:]
-            )
+            command_handler.handle(self._client_connection, args[1:])
         return True
 
+    def _get_class_name_for_command(self, command):
+        return '%sCommandHandler' % command.capitalize()
+
     def _get_command_handler(self, command):
-        module_name, class_name = \
-            self._get_module_name_and_class_name_for_command(command)
+        module_name = self._get_module_name_for_command(command)
         self._import_command_handler(module_name)
+        class_name = self._get_class_name_for_command(command)
         return self._instantiate_command_handler(module_name, class_name)
 
-    def _get_module_name_and_class_name_for_command(self, command):
-        return (
-            'pymud.commands.%s_command_handler' % command.lower(),
-            '%sCommandHandler' % command.capitalize(),
-        )
+    def _get_module_name_for_command(self, command):
+        return 'pymud.commands.%s_command_handler' % command.lower()
 
     def _has_source_file_changed(self, module_name):
         source_file_name, compiled_file_name = [
             join_path(
                 dirname(sys.modules[module_name].__file__),
                 module_name.split('.')[-1] + extension,
-            ) for extension in ('.py', '.pyc')
+            )
+            for extension in ('.py', '.pyc')
         ]
         return getmtime(source_file_name) > getmtime(compiled_file_name)
 

@@ -1,18 +1,12 @@
 import sys
 
-from SocketServer import BaseRequestHandler
+from six.moves.socketserver import BaseRequestHandler
 
 from pymud import LOGGER
 
-from pymud.processors import (
-    CommandProcessor,
-    LoginProcessor,
-)
+from pymud.processors import CommandProcessor, LoginProcessor
 
-from . import (
-    ClientConnection,
-    ClientConnectionManager,
-)
+from . import ClientConnection, ClientConnectionManager
 
 
 class RequestHandler(BaseRequestHandler):
@@ -30,10 +24,7 @@ class RequestHandler(BaseRequestHandler):
                 return
             if isinstance(e, IOError) and e.errno == 32:
                 return
-            LOGGER.error(
-                sys.exc_info()[1],
-                sys.exc_info()[2]
-            )
+            LOGGER.error(sys.exc_info()[1], sys.exc_info()[2])
 
     def setup(self):
         client_connection = ClientConnection(self.client_address, self.request)

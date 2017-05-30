@@ -10,7 +10,6 @@ class CharacterEntity(BaseEntity):
         on_name_change_callbacks=None,
         on_location_change_callbacks=None
     ):
-        BaseEntity.__init__(self)
         self._name = name
         self._location = location
         self._state = state

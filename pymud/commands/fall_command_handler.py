@@ -3,8 +3,7 @@ from .base_command_handler import BaseCommandHandler
 
 class FallCommandHandler(BaseCommandHandler):
     def __init__(self):
-        BaseCommandHandler.__init__(
-            self,
+        super(FallCommandHandler, self).__init__(
             'fall',
             1,
             resulting_state='lying down'

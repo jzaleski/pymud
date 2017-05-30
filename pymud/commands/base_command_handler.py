@@ -15,7 +15,11 @@ class BaseCommandHandler(object):
         self._cannot_execute_command_message = cannot_execute_command_message
         self._resulting_state = resulting_state
 
-    def handle(self, source, args):
+    def handle(
+        self,
+        source,
+        args
+    ):
         source_character = source.character
         if not self._can_execute_command(source):
             source.send(self._cannot_execute_command_message)
@@ -50,7 +54,12 @@ class BaseCommandHandler(object):
     def _can_execute_command(self, source):
         return True
 
-    def _execute_range_function(self, distance, source, args):
+    def _execute_range_function(
+        self,
+        distance,
+        source,
+        args
+    ):
         range_function = getattr(
             self,
             'range_%s' % distance,

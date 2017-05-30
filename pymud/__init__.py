@@ -7,7 +7,7 @@ from os.path import (
     join as join_path,
 )
 
-from ConfigParser import ConfigParser
+from six.moves.configparser import ConfigParser
 
 from pymud.utilities import ConsoleLogger
 

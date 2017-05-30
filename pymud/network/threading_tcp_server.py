@@ -1,5 +1,5 @@
-from SocketServer import ThreadingTCPServer as _ThreadingTCPServer
+from six.moves.socketserver import ThreadingTCPServer as ThreadingTCPServer_
 
 
-class ThreadingTCPServer(_ThreadingTCPServer):
+class ThreadingTCPServer(ThreadingTCPServer_):
     allow_reuse_address = True

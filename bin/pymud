@@ -10,10 +10,7 @@ from os.path import (
 
 sys.path.append(abspath(join_path(dirname(__file__), '..')))
 
-from pymud import (
-    CONFIG,
-    LOGGER,
-)
+from pymud import CONFIG, LOGGER
 
 from pymud.network import (
     ClientConnectionManager,
@@ -24,19 +21,10 @@ from pymud.network import (
 if __name__ == '__main__':
     host = CONFIG.get('general', 'host')
     port = CONFIG.getint('general', 'port')
-    server = ThreadingTCPServer(
-        (host, port),
-        RequestHandler
-    )
+    server = ThreadingTCPServer((host, port), RequestHandler)
     try:
-        LOGGER.info('Started listening on: "%s:%d"' % (
-            host,
-            port,
-        ))
+        LOGGER.info('Started listening on: "%s:%d"' % (host, port))
         server.serve_forever()
     except KeyboardInterrupt:
-        LOGGER.info('Stopped listening on: "%s:%d"' % (
-            host,
-            port,
-        ))
+        LOGGER.info('Stopped listening on: "%s:%d"' % ( host, port))
     ClientConnectionManager.instance.close_and_remove_all()

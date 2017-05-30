@@ -1,1 +1,1 @@
-web: env bin/pymud
+app: PORT=7001 bin/pymud

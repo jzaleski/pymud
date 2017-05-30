@@ -3,8 +3,7 @@ from .base_command_handler import BaseCommandHandler
 
 class StandCommandHandler(BaseCommandHandler):
     def __init__(self):
-        BaseCommandHandler.__init__(
-            self,
+        super(StandCommandHandler, self).__init__(
             'stand',
             1,
             resulting_state='standing'

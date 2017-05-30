@@ -1,4 +1,4 @@
-import datetime, sys, traceback
+import datetime, traceback
 
 
 class BaseLogger(object):
@@ -7,8 +7,13 @@ class BaseLogger(object):
         self._log_debug = True
         self._log_error = True
         self._log_info = True
+        self._log_warn = True
 
-    def debug(self, message, traceback=None):
+    def debug(
+        self,
+        message,
+        traceback=None
+    ):
         if self._log_debug:
             self._write(
                 'DEBUG',
@@ -16,7 +21,11 @@ class BaseLogger(object):
                 traceback
             )
 
-    def error(self, message, traceback=None):
+    def error(
+        self,
+        message,
+        traceback=None
+    ):
         if self._log_error:
             self._write(
                 'ERROR',
@@ -24,7 +33,11 @@ class BaseLogger(object):
                 traceback
             )
 
-    def info(self, message, traceback=None):
+    def info(
+        self,
+        message,
+        traceback=None
+    ):
         if self._log_info:
             self._write(
                 'INFO',
@@ -32,7 +45,24 @@ class BaseLogger(object):
                 traceback
             )
 
-    def _write(self, level, message, stack_trace):
+    def warn(
+        self,
+        message,
+        traceback=None
+    ):
+        if self._log_warn:
+            self._write(
+                'WARN',
+                message,
+                traceback
+            )
+
+    def _write(
+        self,
+        level,
+        message,
+        stack_trace
+    ):
         now = datetime.datetime.now()
         self._output_stream.write(
             '%s %s [%s]: %s\n' % (
@@ -43,7 +73,4 @@ class BaseLogger(object):
             )
         )
         if stack_trace:
-            traceback.print_tb(
-                stack_trace,
-                file=self._output_stream
-            )
+            traceback.print_tb(stack_trace, file=self._output_stream)

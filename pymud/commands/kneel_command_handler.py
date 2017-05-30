@@ -3,8 +3,7 @@ from .base_command_handler import BaseCommandHandler
 
 class KneelCommandHandler(BaseCommandHandler):
     def __init__(self):
-        BaseCommandHandler.__init__(
-            self,
+        super(KneelCommandHandler, self).__init__(
             'kneel',
             1,
             resulting_state='kneeling'
