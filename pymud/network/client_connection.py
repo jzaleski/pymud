@@ -1,5 +1,3 @@
-import six
-
 from pymud.entities import CharacterEntity
 
 
@@ -51,11 +49,7 @@ class ClientConnection(object):
             )
 
     def _decode(self, value):
-        if six.PY3:
-            return value.decode()
-        return value
+        return value.decode()
 
     def _encode(self, value):
-        if six.PY3:
-            return str.encode(value)
-        return value
+        return value.encode()
