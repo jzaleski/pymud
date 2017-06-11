@@ -1,10 +1,18 @@
+from pymud.engines import GameEngine
+
 from pymud.entities import CharacterEntity
 
 
 class ClientConnection(object):
-    def __init__(self, remote_address, socket):
+    def __init__(
+        self,
+        remote_address,
+        socket
+    ):
         self._id = id(self)
-        self._character_entity = CharacterEntity(state='standing')
+        game_engine = GameEngine.instance
+        self._character_entity = CharacterEntity(location=game_engine.starting_location,
+            state=game_engine.starting_state)
         self._remote_address = remote_address
         self._socket = socket
 
@@ -35,7 +43,7 @@ class ClientConnection(object):
         self,
         message='',
         num_leading_new_lines=0,
-        num_trailing_new_lines=0
+        num_trailing_new_lines=1
     ):
         if message:
             self._socket.send(
@@ -49,7 +57,11 @@ class ClientConnection(object):
             )
 
     def _decode(self, value):
-        return value.decode()
+        if isinstance(value, bytes):
+            value = value.decode()
+        return value
 
     def _encode(self, value):
-        return value.encode()
+        if not isinstance(value, bytes):
+            value = value.encode()
+        return value

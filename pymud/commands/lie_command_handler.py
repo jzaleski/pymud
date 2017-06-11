@@ -9,8 +9,16 @@ class LieCommandHandler(BaseCommandHandler):
             resulting_state='lying down'
         )
 
-    def range_0(self, source, args):
+    def range_0(
+        self,
+        source,
+        args
+    ):
         return 'You lie down'
 
-    def range_1(self, source, args):
+    def range_1(
+        self,
+        source,
+        args
+    ):
         return '%s lies down' % source.character.name

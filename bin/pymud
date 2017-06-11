@@ -12,6 +12,8 @@ sys.path.append(abspath(join_path(dirname(__file__), '..')))
 
 from pymud import CONFIG, LOGGER
 
+from pymud.engines import GameEngine
+
 from pymud.network import (
     ClientConnectionManager,
     RequestHandler,
@@ -19,12 +21,26 @@ from pymud.network import (
 )
 
 if __name__ == '__main__':
+    try:
+        LOGGER.info('Initializing game engine')
+        GameEngine.instance.initialize()
+        LOGGER.info('Initialized game engine')
+    except:
+        LOGGER.error('Failed to initialize game engine', sys.exc_info()[2])
+        sys.exit(1)
+
     host = CONFIG.get('general', 'host')
     port = CONFIG.getint('general', 'port')
-    server = ThreadingTCPServer((host, port), RequestHandler)
+    host_and_port = (host, port)
+
+    server = ThreadingTCPServer(host_and_port, RequestHandler)
     try:
-        LOGGER.info('Started listening on: "%s:%d"' % (host, port))
+        LOGGER.info('Starting listening on "%s:%d"' % host_and_port)
         server.serve_forever()
     except KeyboardInterrupt:
-        LOGGER.info('Stopped listening on: "%s:%d"' % ( host, port))
+        LOGGER.info('Stopped listening on: "%s:%d"' % host_and_port)
+    except:
+        LOGGER.error('Failed to initialize server', sys.exc_info()[2])
+        sys.exit(1)
+
     ClientConnectionManager.instance.close_and_remove_all()

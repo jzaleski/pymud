@@ -5,11 +5,23 @@ class YellCommandHandler(BaseCommandHandler):
     def __init__(self):
         super(YellCommandHandler, self).__init__('yell', 2)
 
-    def range_0(self, source, args):
+    def range_0(
+        self,
+        source,
+        args
+    ):
         return 'You belt out, "%s"' % ' '.join(args)
 
-    def range_1(self, source, args):
+    def range_1(
+        self,
+        source,
+        args
+    ):
         return '%s yells, "%s"' % (source.character.name, ' '.join(args))
 
-    def range_2(self, source, args):
+    def range_2(
+        self,
+        source,
+        args
+    ):
         return self.range_1(source, args)

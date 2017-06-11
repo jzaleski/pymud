@@ -9,8 +9,16 @@ class StandCommandHandler(BaseCommandHandler):
             resulting_state='standing'
         )
 
-    def range_0(self, source, args):
+    def range_0(
+        self,
+        source,
+        args
+    ):
         return 'You stand up'
 
-    def range_1(self, source, args):
+    def range_1(
+        self,
+        source,
+        args
+    ):
         return '%s stands up' % source.character.name

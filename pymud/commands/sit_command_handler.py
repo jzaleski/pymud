@@ -9,8 +9,16 @@ class SitCommandHandler(BaseCommandHandler):
             resulting_state='sitting'
         )
 
-    def range_0(self, source, args):
+    def range_0(
+        self,
+        source,
+        args
+    ):
         return 'You sit down'
 
-    def range_1(self, source, args):
+    def range_1(
+        self,
+        source,
+        args
+    ):
         return '%s sits down' % source.character.name

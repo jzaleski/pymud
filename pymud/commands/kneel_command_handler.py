@@ -9,8 +9,16 @@ class KneelCommandHandler(BaseCommandHandler):
             resulting_state='kneeling'
         )
 
-    def range_0(self, source, args):
+    def range_0(
+        self,
+        source,
+        args
+    ):
         return 'You kneel down'
 
-    def range_1(self, source, args):
+    def range_1(
+        self,
+        source,
+        args
+    ):
         return '%s kneels down' % source.character.name

@@ -12,49 +12,49 @@ class BaseLogger(object):
     def debug(
         self,
         message,
-        traceback=None
+        stack_trace=None
     ):
         if self._log_debug:
             self._write(
                 'DEBUG',
                 message,
-                traceback
+                stack_trace
             )
 
     def error(
         self,
         message,
-        traceback=None
+        stack_trace=None
     ):
         if self._log_error:
             self._write(
                 'ERROR',
                 message,
-                traceback
+                stack_trace
             )
 
     def info(
         self,
         message,
-        traceback=None
+        stack_trace=None
     ):
         if self._log_info:
             self._write(
                 'INFO',
                 message,
-                traceback
+                stack_trace
             )
 
     def warn(
         self,
         message,
-        traceback=None
+        stack_trace=None
     ):
         if self._log_warn:
             self._write(
                 'WARN',
                 message,
-                traceback
+                stack_trace
             )
 
     def _write(

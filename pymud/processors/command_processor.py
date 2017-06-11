@@ -1,5 +1,8 @@
-import sys
+import os, sys
 
+import six
+
+from fnmatch import fnmatch
 from os.path import (
     dirname,
     getmtime,
@@ -70,14 +73,14 @@ class CommandProcessor(BaseProcessor):
         return 'pymud.commands.%s_command_handler' % command.lower()
 
     def _has_source_file_changed(self, module_name):
-        source_file_name, compiled_file_name = [
-            join_path(
-                dirname(sys.modules[module_name].__file__),
-                module_name.split('.')[-1] + extension,
-            )
-            for extension in ('.py', '.pyc')
-        ]
-        return getmtime(source_file_name) > getmtime(compiled_file_name)
+        source_directory = dirname(sys.modules[module_name].__file__)
+        source_file_name = '%s.py' % module_name.split('.')[-1]
+        source_file_full_path = join_path(source_directory, source_file_name)
+        compiled_directory = '%s/__pycache__' % source_directory if six.PY3 else source_directory
+        compiled_file_name = next(file_name for file_name in os.listdir(compiled_directory)
+            if fnmatch(file_name, '%s*.pyc' % module_name.split('.')[-1]))
+        compiled_file_full_path = join_path(compiled_directory, compiled_file_name)
+        return getmtime(source_file_full_path) > getmtime(compiled_file_full_path)
 
     def _import_command_handler(self, module_name):
         if module_name in sys.modules:
