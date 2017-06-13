@@ -11,7 +11,7 @@ class ClientConnection(object):
     ):
         self._id = id(self)
         game_engine = GameEngine.instance
-        self._character_entity = CharacterEntity(location=game_engine.starting_location,
+        self._character = CharacterEntity(location=game_engine.starting_location,
             state=game_engine.starting_state)
         self._remote_address = remote_address
         self._socket = socket
@@ -22,7 +22,7 @@ class ClientConnection(object):
 
     @property
     def character(self):
-        return self._character_entity
+        return self._character
 
     @property
     def remote_ip(self):

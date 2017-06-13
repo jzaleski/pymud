@@ -34,7 +34,8 @@ class BaseCommandHandler(object):
             args
         )
         if result != None:
-            source_character.state = resulting_state
+            if resulting_state != None:
+                source_character.state = resulting_state
             source.send(result)
         handled_client_connections = [source]
         for distance in range(1, self._audible_or_visual_range + 1):

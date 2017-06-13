@@ -8,7 +8,11 @@ from pymud.utilities.decorators import classproperty
 class GameEngine(object):
     _lock = thread.allocate_lock()
 
-    def __new__(cls, *args, **kwargs):
+    def __new__(
+        cls,
+        *args,
+        **kwargs
+    ):
         return cls.instance
 
     @classproperty

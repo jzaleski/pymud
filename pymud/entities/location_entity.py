@@ -6,12 +6,18 @@ class LocationEntity(BaseEntity):
         self,
         name,
         description,
+        characters=None,
         exits=None
     ):
         self._id = id(self)
         self._name = name
         self._description = description
+        self._characters = characters or []
         self._exits = exits or []
+
+    @property
+    def characters(self):
+        return self._characters
 
     @property
     def description(self):
