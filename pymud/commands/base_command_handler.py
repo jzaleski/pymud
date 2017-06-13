@@ -49,7 +49,7 @@ class BaseCommandHandler(object):
             )
             for matching_client_connection in matching_client_connections:
                 if result != None:
-                    matching_client_connection.send(result, num_leading_new_lines=1)
+                    matching_client_connection.send(result)
                 handled_client_connections.append(matching_client_connection)
 
     def _can_execute_command(self, source):
