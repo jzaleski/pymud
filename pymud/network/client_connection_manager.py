@@ -58,7 +58,8 @@ class ClientConnectionManager(object):
         self.remove_all()
 
     def get_all(self, exclude_waiting_for_name=False):
-        for _, client_connection in enumerate(self._client_connections.values()):
+        client_connections = list(self._client_connections.values())
+        for client_connection in client_connections:
             if exclude_waiting_for_name and client_connection.character.waiting_for_name:
                 continue
             else:
@@ -69,7 +70,8 @@ class ClientConnectionManager(object):
         client_connections_to_exclude,
         exclude_waiting_for_name=False
     ):
-        for _, client_connection in enumerate(self._client_connections.values()):
+        client_connections = list(self._client_connections.values())
+        for client_connection in client_connections:
             if exclude_waiting_for_name and client_connection.character.waiting_for_name or \
                 client_connection in client_connections_to_exclude:
                 continue
@@ -87,8 +89,9 @@ class ClientConnectionManager(object):
         location,
         client_connections_to_exclude
     ):
-        client_connections = self._client_connections_by_location.get(location).values()
-        for _, client_connection in enumerate(client_connections):
+        client_connections = \
+            list(self._client_connections_by_location.get(location).values())
+        for client_connection in client_connections:
             if client_connection in client_connections_to_exclude:
                 continue
             else:
@@ -126,7 +129,7 @@ class ClientConnectionManager(object):
                 old_client_connections_by_client_connection_id
         new_client_connections_by_client_connection_id = \
             self._client_connections_by_location.get(new_location, {})
-        if not client_connection_id in new_client_connections_by_client_connection_id:
+        if client_connection_id not in new_client_connections_by_client_connection_id:
             new_client_connections_by_client_connection_id[client_connection_id] = \
                 character.client_connection
             self._client_connections_by_location[new_location] = \

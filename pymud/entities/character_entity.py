@@ -15,7 +15,7 @@ class CharacterEntity(BaseEntity):
         self._state = state
         self._on_name_change_callbacks = on_name_change_callbacks or []
         self._on_location_change_callbacks = on_location_change_callbacks or []
-        self._waiting_for_name = name == None
+        self._waiting_for_name = name is None
 
     @property
     def location(self):

@@ -33,8 +33,8 @@ class BaseCommandHandler(object):
             source,
             args
         )
-        if result != None:
-            if resulting_state != None:
+        if result is not None:
+            if resulting_state is not None:
                 source_character.state = resulting_state
             source.send(result)
         handled_client_connections = [source]
@@ -48,7 +48,7 @@ class BaseCommandHandler(object):
                 args
             )
             for matching_client_connection in matching_client_connections:
-                if result != None:
+                if result is not None:
                     matching_client_connection.send(result)
                 handled_client_connections.append(matching_client_connection)
 
